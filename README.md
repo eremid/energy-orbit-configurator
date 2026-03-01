@@ -1,5 +1,7 @@
 # Energy Orbit Configurator
 
+Live at: [https://eremid.github.io/energy-orbit-configurator/](https://eremid.github.io/energy-orbit-configurator/)
+
 A web application to generate a configuration QR code for the Energy Orbit Apple Watch app.
 
 ## Features
