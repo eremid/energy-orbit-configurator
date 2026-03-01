@@ -435,23 +435,49 @@ export default function App() {
         </div>
 
         <div className="lg:sticky lg:top-8 space-y-8 h-fit">
-          <div className="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center">
-            <h3 className="text-slate-900 text-xl font-bold mb-6">{t.previewTitle}</h3>
+          <div className="bg-slate-800 border border-slate-700 p-8 rounded-3xl shadow-2xl flex flex-col items-center relative overflow-hidden">
+            {/* Subtle glow background */}
+            <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full" />
+            <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full" />
+
+            <h3 className="text-white text-xl font-bold mb-6 flex items-center gap-2 relative">
+              {t.previewTitle}
+            </h3>
             
             {config.haToken && (
-              <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex gap-3 items-center text-sm animate-pulse">
-                <AlertTriangle className="shrink-0 w-5 h-5 text-red-500" />
+              <div className="mb-6 bg-red-900/20 border border-red-500/30 text-red-200 px-4 py-3 rounded-xl flex gap-3 items-center text-sm animate-pulse relative">
+                <AlertTriangle className="shrink-0 w-5 h-5 text-red-400" />
                 <p className="font-medium leading-tight">{t.qrWarning}</p>
               </div>
             )}
 
-            <div className="bg-slate-100 p-4 rounded-2xl">
-              <QRCodeSVG 
-                value={qrData} 
-                size={256} 
-                level="M" 
-                includeMargin={true}
-              />
+            <div className="relative">
+              {/* Outer glow effect for the QR container */}
+              <div className="absolute -inset-4 bg-blue-500/10 rounded-[2.5rem] blur-2xl" />
+              
+              <div className="relative bg-white p-5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 transition-transform hover:scale-[1.02] duration-300">
+                <QRCodeSVG 
+                  value={qrData} 
+                  size={240} 
+                  level="H" 
+                  includeMargin={false}
+                  fgColor="#1e293b" // Slate 800
+                  imageSettings={{
+                    src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjM2I4MmY2IiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIxMyAyIDMgMTQgMTIgMTQgMTEgMjIgMjEgMTAgMTIgMTAgMTMgMiIvPjwvc3ZnPg==",
+                    height: 40,
+                    width: 40,
+                    excavate: true,
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-col items-center gap-1 relative">
+              <p className="text-slate-400 text-sm font-medium">Energy Orbit configuration</p>
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                <p className="text-slate-500 text-xs uppercase tracking-widest font-bold">Ready to scan</p>
+              </div>
             </div>
           </div>
 
