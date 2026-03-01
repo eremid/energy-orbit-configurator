@@ -475,7 +475,11 @@ export default function App() {
               <Info className="w-4 h-4" /> {t.formatTitle}
             </h4>
             <pre className="text-xs bg-black/40 p-4 rounded-lg overflow-x-auto text-blue-300 font-mono">
-              {JSON.stringify(JSON.parse(qrData), null, 2)}
+              {(() => {
+                const displayData = JSON.parse(qrData);
+                if (displayData.haToken) displayData.haToken = '••••••••••••••••';
+                return JSON.stringify(displayData, null, 2);
+              })()}
             </pre>
           </div>
         </div>
