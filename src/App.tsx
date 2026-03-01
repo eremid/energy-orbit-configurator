@@ -7,7 +7,6 @@ import {
   Settings, 
   Plus, 
   Trash2, 
-  Download, 
   ShieldCheck, 
   Info,
   Languages,
@@ -62,7 +61,6 @@ const translations = {
     battLevelEntity: "Entité Batterie (%)",
     battPowerTitle: "Puissance Batterie (W)",
     battPowerEntity: "Entité Puissance (W)",
-    download: "Télécharger le QR Code",
     previewTitle: "Votre Configuration QR",
     formatTitle: "Format JSON",
     footer: "Energy Orbit Configurator — Pour une Apple Watch mieux informée.",
@@ -96,7 +94,6 @@ const translations = {
     battLevelEntity: "Battery Entity (%)",
     battPowerTitle: "Battery Power (W)",
     battPowerEntity: "Power Entity (W)",
-    download: "Download QR Code",
     previewTitle: "Your QR Configuration",
     formatTitle: "JSON Format",
     footer: "Energy Orbit Configurator — For a better informed Apple Watch.",
@@ -231,26 +228,6 @@ export default function App() {
       setImportStatus('error');
       setTimeout(() => setImportStatus('idle'), 3000);
     }
-  };
-
-  const downloadQR = () => {
-    const svg = document.querySelector('svg');
-    if (!svg) return;
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx?.drawImage(img, 0, 0);
-      const pngFile = canvas.toDataURL('image/png');
-      const downloadLink = document.createElement('a');
-      downloadLink.download = 'energy-orbit-config.png';
-      downloadLink.href = pngFile;
-      downloadLink.click();
-    };
-    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
   };
 
   return (
@@ -463,12 +440,6 @@ export default function App() {
                 includeMargin={true}
               />
             </div>
-            <button 
-              onClick={downloadQR}
-              className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]"
-            >
-              <Download className="w-5 h-5" /> {t.download}
-            </button>
           </div>
 
           <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
