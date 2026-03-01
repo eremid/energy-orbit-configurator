@@ -36,20 +36,18 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: energy-orbit-configurator/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Install dependencies
         run: npm install
-        working-directory: energy-orbit-configurator
       - name: Build
         run: npm run build
-        working-directory: energy-orbit-configurator
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: './energy-orbit-configurator/dist'
+          path: './dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
