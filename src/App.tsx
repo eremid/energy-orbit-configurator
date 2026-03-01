@@ -111,7 +111,17 @@ const translations = {
   }
 };
 
-const InputWithError = ({ label, value, onChange, placeholder, type = "text", error, errorMessage }: any) => (
+interface InputProps {
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  type?: string;
+  error?: boolean | string;
+  errorMessage?: string;
+}
+
+const InputWithError = ({ label, value, onChange, placeholder, type = "text", error, errorMessage }: InputProps) => (
   <div>
     <label>{label}</label>
     <input 
@@ -272,7 +282,7 @@ export default function App() {
                   type="url"
                   value={config.haURL}
                   error={config.haURL && !isValidHAUrl(config.haURL)}
-                  onChange={(e: any) => setConfig({ ...config, haURL: e.target.value.trim() })}
+                  onChange={(e) => setConfig({ ...config, haURL: e.target.value.trim() })}
                   errorMessage={t.validationErrorURL}
                 />
                 <InputWithError 
@@ -280,7 +290,7 @@ export default function App() {
                   placeholder={t.placeholderToken}
                   type="password"
                   value={config.haToken}
-                  onChange={(e: any) => setConfig({ ...config, haToken: e.target.value.trim() })}
+                  onChange={(e) => setConfig({ ...config, haToken: e.target.value.trim() })}
                   errorMessage={t.validationErrorEntity}
                 />
               </div>
@@ -296,16 +306,17 @@ export default function App() {
                   placeholder={t.placeholderSensor}
                   value={config.gridEntityId}
                   error={config.gridEntityId && !isValidEntityId(config.gridEntityId)}
-                  onChange={(e: any) => setConfig({ ...config, gridEntityId: sanitizeEntity(e.target.value) })}
+                  onChange={(e) => setConfig({ ...config, gridEntityId: sanitizeEntity(e.target.value) })}
                   errorMessage={t.validationErrorEntity}
                 />
                 <div>
                   <label>{t.powerMax}</label>
                   <input 
                     type="number" 
+                    min="0"
                     className="w-full"
                     value={config.gridMax}
-                    onChange={(e) => setConfig({ ...config, gridMax: parseInt(e.target.value) || 0 })}
+                    onChange={(e) => setConfig({ ...config, gridMax: Math.max(0, parseInt(e.target.value) || 0) })}
                   />
                 </div>
               </div>
@@ -342,9 +353,10 @@ export default function App() {
                   <label>{t.powerMax}</label>
                   <input 
                     type="number" 
+                    min="0"
                     className="w-full"
                     value={config.solarMax}
-                    onChange={(e) => setConfig({ ...config, solarMax: parseInt(e.target.value) || 0 })}
+                    onChange={(e) => setConfig({ ...config, solarMax: Math.max(0, parseInt(e.target.value) || 0) })}
                   />
                 </div>
               </div>
@@ -411,9 +423,10 @@ export default function App() {
                   <label>{t.powerMax}</label>
                   <input 
                     type="number" 
+                    min="0"
                     className="w-full"
                     value={config.batteryPowerMax}
-                    onChange={(e) => setConfig({ ...config, batteryPowerMax: parseInt(e.target.value) || 0 })}
+                    onChange={(e) => setConfig({ ...config, batteryPowerMax: Math.max(0, parseInt(e.target.value) || 0) })}
                   />
                 </div>
               </div>
