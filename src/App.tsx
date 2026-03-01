@@ -250,7 +250,7 @@ export default function App() {
       downloadLink.href = pngFile;
       downloadLink.click();
     };
-    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
   };
 
   return (
