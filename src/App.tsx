@@ -159,7 +159,7 @@ export default function App() {
 
   const qrData = useMemo(() => {
     // Create a dynamic object to hold only the fields with content
-    const cleanedConfig: any = { ...config };
+    const cleanedConfig: Partial<ConfigState> & Record<string, unknown> = { ...config };
     
     // Always trim
     cleanedConfig.haURL = config.haURL.trim();
