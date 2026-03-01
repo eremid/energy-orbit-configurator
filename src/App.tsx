@@ -151,11 +151,18 @@ export default function App() {
   };
 
   const qrData = useMemo(() => {
-    const cleanedConfig = { ...config };
+    // Create a dynamic object to hold only the fields with content
+    const cleanedConfig: any = { ...config };
+    
+    // Always trim
     cleanedConfig.haURL = config.haURL.trim();
     cleanedConfig.haToken = config.haToken.trim();
     cleanedConfig.gridEntityId = config.gridEntityId.trim();
     
+    // Remove URL and Token if empty to avoid cluttering the QR code
+    if (!cleanedConfig.haURL) delete cleanedConfig.haURL;
+    if (!cleanedConfig.haToken) delete cleanedConfig.haToken;
+
     cleanedConfig.solarEntityIds = config.solarEntityIds
       .map(id => id.trim())
       .filter(id => id !== '');
