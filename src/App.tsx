@@ -13,7 +13,8 @@ import {
   Languages,
   FileJson,
   Check,
-  AlertCircle
+  AlertCircle,
+  AlertTriangle
 } from 'lucide-react';
 
 interface ConfigState {
@@ -74,7 +75,8 @@ const translations = {
     importBtn: "Appliquer le JSON",
     importPlaceholder: "Collez votre JSON ici...",
     importSuccess: "Configuration importée !",
-    importError: "JSON invalide ou mal structuré."
+    importError: "JSON invalide ou URL incorrecte.",
+    qrWarning: "Attention : Ce QR Code contient votre Token Home Assistant. Ne le partagez jamais publiquement !"
   },
   en: {
     title: "Energy Orbit Configurator",
@@ -107,7 +109,8 @@ const translations = {
     importBtn: "Apply JSON",
     importPlaceholder: "Paste your JSON here...",
     importSuccess: "Configuration imported!",
-    importError: "Invalid or malformed JSON."
+    importError: "Invalid JSON or malformed URL.",
+    qrWarning: "Warning: This QR Code contains your Home Assistant Token. Never share it publicly!"
   }
 };
 
@@ -195,8 +198,15 @@ export default function App() {
   const handleImport = () => {
     try {
       const parsed = JSON.parse(importJson);
+      
+      // Validation strictly enforced on import
+      const importedUrl = (parsed.haURL || '').trim();
+      if (importedUrl !== '' && !isValidHAUrl(importedUrl)) {
+        throw new Error('Invalid URL');
+      }
+
       const newConfig: ConfigState = {
-        haURL: (parsed.haURL || '').trim(),
+        haURL: importedUrl,
         haToken: (parsed.haToken || '').trim(),
         gridEntityId: sanitizeEntity(parsed.gridEntityId || ''),
         gridMax: Number(parsed.gridMax) || 6000,
@@ -430,6 +440,14 @@ export default function App() {
         <div className="lg:sticky lg:top-8 space-y-8 h-fit">
           <div className="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center">
             <h3 className="text-slate-900 text-xl font-bold mb-6">{t.previewTitle}</h3>
+            
+            {config.haToken && (
+              <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex gap-3 items-center text-sm animate-pulse">
+                <AlertTriangle className="shrink-0 w-5 h-5 text-red-500" />
+                <p className="font-medium leading-tight">{t.qrWarning}</p>
+              </div>
+            )}
+
             <div className="bg-slate-100 p-4 rounded-2xl">
               <QRCodeSVG 
                 value={qrData} 
