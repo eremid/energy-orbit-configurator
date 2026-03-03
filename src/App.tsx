@@ -141,6 +141,20 @@ const InputWithError = ({ label, value, onChange, placeholder, type = "text", er
   </div>
 );
 
+const isValidEntityId = (id: string) => {
+  if (id === '') return true;
+  return /^sensor\.[a-z0-9_]+$/.test(id);
+};
+
+const isValidHAUrl = (url: string) => {
+  if (url === '') return true;
+  return /^https?:\/\/.+$/.test(url);
+};
+
+const sanitizeEntity = (val: string) => {
+  return val.toLowerCase().replace(/[^a-z0-9_.]/g, '');
+};
+
 export default function App() {
   const [config, setConfig] = useState<ConfigState>(INITIAL_STATE);
   const [lang, setLang] = useState<Language>('fr');
@@ -148,20 +162,6 @@ export default function App() {
   const [importStatus, setImportStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const t = translations[lang];
-
-  const isValidEntityId = (id: string) => {
-    if (id === '') return true;
-    return /^sensor\.[a-z0-9_]+$/.test(id);
-  };
-
-  const isValidHAUrl = (url: string) => {
-    if (url === '') return true;
-    return /^https?:\/\/.+$/.test(url);
-  };
-
-  const sanitizeEntity = (val: string) => {
-    return val.toLowerCase().replace(/[^a-z0-9_.]/g, '');
-  };
 
   const qrData = useMemo(() => {
     // Create a dynamic object to hold only the fields with content
@@ -194,6 +194,19 @@ export default function App() {
 
     return JSON.stringify(cleanedConfig);
   }, [config]);
+
+  // Memoize the expensive parsing and stringifying of JSON for the preview
+  // This avoids running JSON.parse and JSON.stringify on every single keystroke
+  // in the import textarea, or when changing the language.
+  const displayDataString = useMemo(() => {
+    try {
+      const displayData = JSON.parse(qrData);
+      if (displayData.haToken) displayData.haToken = '••••••••••••••••';
+      return JSON.stringify(displayData, null, 2);
+    } catch {
+      return '{}';
+    }
+  }, [qrData]);
 
   const handleEntityChange = (
     field: 'solarEntityIds' | 'batteryEntityIds' | 'batteryPowerEntityIds',
@@ -518,11 +531,7 @@ export default function App() {
               <Info className="w-4 h-4" /> {t.formatTitle}
             </h4>
             <pre className="text-xs bg-black/40 p-4 rounded-lg overflow-x-auto text-blue-300 font-mono">
-              {(() => {
-                const displayData = JSON.parse(qrData);
-                if (displayData.haToken) displayData.haToken = '••••••••••••••••';
-                return JSON.stringify(displayData, null, 2);
-              })()}
+              {displayDataString}
             </pre>
           </div>
         </div>
