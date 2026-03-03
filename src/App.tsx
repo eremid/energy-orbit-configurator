@@ -74,7 +74,8 @@ const translations = {
     importPlaceholder: "Collez votre JSON ici...",
     importSuccess: "Configuration importée !",
     importError: "JSON invalide ou URL incorrecte.",
-    qrWarning: "Attention : Ce QR Code contient votre Token Home Assistant. Ne le partagez jamais publiquement !"
+    qrWarning: "Attention : Ce QR Code contient votre Token Home Assistant. Ne le partagez jamais publiquement !",
+    remove: "Supprimer"
   },
   en: {
     title: "Energy Orbit Configurator",
@@ -107,7 +108,8 @@ const translations = {
     importPlaceholder: "Paste your JSON here...",
     importSuccess: "Configuration imported!",
     importError: "Invalid JSON or malformed URL.",
-    qrWarning: "Warning: This QR Code contains your Home Assistant Token. Never share it publicly!"
+    qrWarning: "Warning: This QR Code contains your Home Assistant Token. Never share it publicly!",
+    remove: "Remove"
   }
 };
 
@@ -348,7 +350,7 @@ export default function App() {
                         value={id}
                         onChange={(e) => handleEntityChange('solarEntityIds', index, e.target.value)}
                       />
-                      <button onClick={() => removeEntity('solarEntityIds', index)} className="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                      <button onClick={() => removeEntity('solarEntityIds', index)} className="p-2 text-slate-400 hover:text-red-500 transition-colors" aria-label={t.remove} title={t.remove}>
                         <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
@@ -388,7 +390,7 @@ export default function App() {
                         value={id}
                         onChange={(e) => handleEntityChange('batteryEntityIds', index, e.target.value)}
                       />
-                      <button onClick={() => removeEntity('batteryEntityIds', index)} className="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                      <button onClick={() => removeEntity('batteryEntityIds', index)} className="p-2 text-slate-400 hover:text-red-500 transition-colors" aria-label={t.remove} title={t.remove}>
                         <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
@@ -418,7 +420,7 @@ export default function App() {
                         value={id}
                         onChange={(e) => handleEntityChange('batteryPowerEntityIds', index, e.target.value)}
                       />
-                      <button onClick={() => removeEntity('batteryPowerEntityIds', index)} className="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                      <button onClick={() => removeEntity('batteryPowerEntityIds', index)} className="p-2 text-slate-400 hover:text-red-500 transition-colors" aria-label={t.remove} title={t.remove}>
                         <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
