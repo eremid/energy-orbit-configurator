@@ -119,9 +119,11 @@ interface InputProps {
   type?: string;
   error?: boolean | string;
   errorMessage?: string;
+  autoComplete?: string;
+  spellCheck?: boolean;
 }
 
-const InputWithError = ({ label, value, onChange, placeholder, type = "text", error, errorMessage }: InputProps) => (
+const InputWithError = ({ label, value, onChange, placeholder, type = "text", error, errorMessage, autoComplete, spellCheck }: InputProps) => (
   <div>
     <label>{label}</label>
     <input 
@@ -130,6 +132,8 @@ const InputWithError = ({ label, value, onChange, placeholder, type = "text", er
       className={`w-full ${error ? 'border-red-500 focus:ring-red-500' : ''}`}
       value={value}
       onChange={onChange}
+      autoComplete={autoComplete}
+      spellCheck={spellCheck}
     />
     {error && <p className="text-red-500 text-xs mt-1">{errorMessage}</p>}
   </div>
@@ -234,7 +238,7 @@ export default function App() {
       setConfig(newConfig);
       setImportStatus('success');
       setTimeout(() => setImportStatus('idle'), 3000);
-    } catch (e) {
+    } catch {
       setImportStatus('error');
       setTimeout(() => setImportStatus('idle'), 3000);
     }
@@ -292,6 +296,8 @@ export default function App() {
                   value={config.haToken}
                   onChange={(e) => setConfig({ ...config, haToken: e.target.value.trim() })}
                   errorMessage={t.validationErrorEntity}
+                  autoComplete="off"
+                  spellCheck={false}
                 />
               </div>
             </div>
