@@ -1,41 +1,130 @@
+/* The Nunito and JetBrains Mono faces are pulled in from main.tsx: imported
+   there, Vite resolves each package's own relative font URLs. Importing them
+   here instead would inline the rules and leave those URLs dangling. */
 @import "tailwindcss";
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* Identity shared with the watch and iPhone apps (EnergyPalette).
+   Colour carries meaning here — never pick one for looks alone:
+   solar = production, mains = what consumes and what comes from the grid,
+   batt = charge and power, good = self-sufficient / surplus / connected. */
+@theme {
+  --font-sans: "Nunito", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #0f172a;
+  --color-ink: #0d0f14;
+  --color-well: #07080b;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  --color-solar: #ffcc00;
+  --color-solar-warm: #ff9f0a;
+  --color-mains: #af52de;
+  --color-batt: #01b3fb;
+  --color-good: #30d158;
+  --color-alert: #ff453b;
 
-body {
-  margin: 0;
-  display: flex;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-#root {
-  width: 100%;
-}
-
-.bg-slate-900 {
-  background-color: #0f172a;
+  --color-muted: #9ea3ad;
+  --color-dim: #6f7884;
+  --color-faint: #5b636e;
 }
 
 @layer base {
-  input[type="text"], input[type="number"], input[type="url"], input[type="password"] {
-    @apply bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all;
+  html {
+    color-scheme: dark;
   }
-  
-  label {
-    @apply block text-sm font-medium text-slate-400 mb-1;
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--color-ink);
+    color: #f2f2f5;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-solar) 30%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-solar);
+    outline-offset: 2px;
+  }
+}
+
+/* Peak-power sliders. Each instance sets --eo-accent (the source colour) and
+   --eo-fill (the filled share) inline. */
+.eo-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.eo-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--eo-accent) 0 var(--eo-fill),
+    rgb(255 255 255 / 0.12) var(--eo-fill) 100%
+  );
+}
+
+.eo-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--eo-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--eo-accent) 20%, transparent);
+}
+
+.eo-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.12);
+}
+
+.eo-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--eo-accent);
+}
+
+.eo-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: var(--eo-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--eo-accent) 20%, transparent);
+}
+
+.eo-range:focus-visible {
+  outline: none;
+}
+
+.eo-range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--eo-accent) 45%, transparent);
+}
+
+.eo-range:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--eo-accent) 45%, transparent);
+}
+
+/* Peak-power readouts are typeable numbers styled as plain text. */
+.eo-num {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.eo-num::-webkit-outer-spin-button,
+.eo-num::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
