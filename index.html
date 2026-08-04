@@ -1,11 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none';">
-    <title>Energy Orbit Configurator</title>
+    <meta name="theme-color" content="#0D0F14" />
+    <meta
+      name="description"
+      content="Générez le QR Code de configuration de l'app Energy Orbit pour Apple Watch. Tout est traité localement dans votre navigateur."
+    />
+    <!-- Fonts are self-hosted and the QR is generated in-page: nothing needs to
+         leave this origin, so nothing is allowed to. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none';"
+    />
+    <title>Energy Orbit Configurateur</title>
   </head>
   <body>
     <div id="root"></div>
